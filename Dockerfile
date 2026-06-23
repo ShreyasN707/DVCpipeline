@@ -7,7 +7,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY scr/ scr/
-COPY models/
+COPY models/ models/
 COPY app.py .
 
 EXPOSE 8000
