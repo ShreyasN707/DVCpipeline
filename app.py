@@ -1,10 +1,10 @@
 from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.cors import 
 from pydantic import BaseModel
 import pandas as pd
 import joblib
 import os
-from fastapi.staticfiles import StaticFiles         # <-- NEW IMPORT
+from fastapi.staticfiles import StaticFiles        
 from fastapi.responses import FileResponse
 
 
@@ -20,11 +20,10 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 @app.get("/")
 async def serve_frontend():
     return FileResponse("static/index.html")
-# -------------------------
 
 class StellarFeatures(BaseModel):
     redshift: float
-    u: float  # <-- NEW
+    u: float  
     g: float
     i: float
     r: float
@@ -40,17 +39,15 @@ except Exception as e:
 @app.post("/predict")
 async def predict_stellar_object(features: StellarFeatures):
     try:
-        # Step A: Extract the raw data from the frontend
+
         data = features.dict()
         
-        # Step B: Calculate the physics features (Color Indices) on the fly
         u_g_color = data['u'] - data['g']
         g_r_color = data['g'] - data['r']
         r_i_color = data['r'] - data['i']
         i_z_color = data['i'] - data['z']
         
-        # Step C: Build the exact 9-column DataFrame the model was trained on
-        # The column names MUST match the list you used in preprocess.py
+
         df = pd.DataFrame([{
             'redshift': data['redshift'],
             'i': data['i'],
@@ -63,7 +60,7 @@ async def predict_stellar_object(features: StellarFeatures):
             'i_z_color': i_z_color
         }])
         
-        # Step D: Predict
+    
         numeric_prediction = pipeline.predict(df)[0]
         text_prediction = le.inverse_transform([numeric_prediction])[0]
         

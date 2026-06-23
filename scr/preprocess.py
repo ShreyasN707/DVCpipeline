@@ -15,7 +15,6 @@ def process_data():
     data['r_i_color'] = data['r'] - data['i']
     data['i_z_color'] = data['i'] - data['z']
     
-    # NOTEBOOK LOGIC HERE
     print(data.isnull().sum())
 
 
@@ -42,7 +41,6 @@ def process_data():
     print("--- Feature Significance Report ---")
     print(p_value_df)
 
-    #End of notebook logic 
     feature_cols = ['redshift', 'i', 'r', 'z', 'delta', 'u_g_color', 'g_r_color', 'r_i_color', 'i_z_color']
     X = data[feature_cols]
     y = data['class']
@@ -58,7 +56,6 @@ def process_data():
     processed_df = X.copy()
     processed_df['target'] = y_encoded
     
-    # Save the clean dataset
     processed_df.to_csv("data/processed/balanced_stars.csv", index=False)
     print("Preprocessed data saved!")
 
