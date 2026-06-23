@@ -24,6 +24,8 @@ async def serve_frontend():
 
 class StellarFeatures(BaseModel):
     redshift: float
+    u: float  # <-- NEW
+    g: float
     i: float
     r: float
     z: float
@@ -38,11 +40,36 @@ except Exception as e:
 @app.post("/predict")
 async def predict_stellar_object(features: StellarFeatures):
     try:
-        df = pd.DataFrame([features.dict()])
+        # Step A: Extract the raw data from the frontend
+        data = features.dict()
+        
+        # Step B: Calculate the physics features (Color Indices) on the fly
+        u_g_color = data['u'] - data['g']
+        g_r_color = data['g'] - data['r']
+        r_i_color = data['r'] - data['i']
+        i_z_color = data['i'] - data['z']
+        
+        # Step C: Build the exact 9-column DataFrame the model was trained on
+        # The column names MUST match the list you used in preprocess.py
+        df = pd.DataFrame([{
+            'redshift': data['redshift'],
+            'i': data['i'],
+            'r': data['r'],
+            'z': data['z'],
+            'delta': data['delta'],
+            'u_g_color': u_g_color,
+            'g_r_color': g_r_color,
+            'r_i_color': r_i_color,
+            'i_z_color': i_z_color
+        }])
+        
+        # Step D: Predict
         numeric_prediction = pipeline.predict(df)[0]
         text_prediction = le.inverse_transform([numeric_prediction])[0]
+        
         return {"status": "success", "prediction": text_prediction}
+        
     except Exception as e:
-        import traceback             
+        import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
