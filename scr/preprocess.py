@@ -4,6 +4,7 @@ import joblib
 import matplotlib.pyplot as plt
 import seaborn as sns 
 from sklearn.feature_selection import f_classif
+from pathlib import Path
 
 def process_data():
     print("Loading raw data...")
@@ -45,7 +46,9 @@ def process_data():
     
     le = LabelEncoder()
     y_encoded = le.fit_transform(y)
-    
+
+    import os                                         
+    os.makedirs("models", exist_ok=True)              
     joblib.dump(le, "models/label_encoder.joblib")
     
     processed_df = X.copy()

@@ -21,8 +21,8 @@ stages:
       size: 16755863
     - path: scr/preprocess.py
       hash: md5
-      md5: 4e687e87435ad36128dead535edbe1b9
-      size: 1694
+      md5: b57723cfdbc97550c5da902c362b5b74
+      size: 1825
     outs:
     - path: data/processed/balanced_stars.csv
       hash: md5
@@ -37,15 +37,14 @@ stages:
       size: 5634276
     - path: scr/train.py
       hash: md5
-      md5: 76cb7d377d98000d125e3e55d063d101
-      size: 1808
+      md5: 69e22950e04cbfea3cc60e9d3a83a1ef
+      size: 1819
     outs:
     - path: metrics.json
       hash: md5
       md5: fd3f32744ca4ea4c7003a6534f245525
       size: 32
-    - path: models
+    - path: models/stellar_pipeline.joblib
       hash: md5
-      md5: bacf7bcd840eefee980543d6d486e72a.dir
-      size: 866
-      nfiles: 1
+      md5: 1577eba918b40500123ce63c440e4ffd
+      size: 70752630

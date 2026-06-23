@@ -25,7 +25,7 @@ def train_model():
     ])
 
     cv_stratergy=StratifiedKFold(n_splits=5,shuffle=True,random_state=42)
-    
+
     print("Training pipeline...")
     scores=cross_val_score(Pipe,X,y,cv=cv_stratergy,scoring='balanced_accuracy',n_jobs=-1)
 
@@ -42,7 +42,8 @@ def train_model():
     
     metrics_dict = {"f1_macro": scores.mean()}
     
-    
+    Pipe.fit(X, y)
+
     with open("metrics.json", "w") as outfile:
         json.dump(metrics_dict, outfile)
     print(f"Metrics saved: {metrics_dict}")
