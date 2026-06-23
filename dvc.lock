@@ -1,0 +1,51 @@
+schema: '2.0'
+stages:
+  download:
+    cmd: python scr/download_data.py
+    deps:
+    - path: scr/download_data.py
+      hash: md5
+      md5: af0c8c03e72aa39cce4df983d5130484
+      size: 590
+    outs:
+    - path: data/raw/star_classification.csv
+      hash: md5
+      md5: bce06389286124270180cc96bf116584
+      size: 16755863
+  preprocess:
+    cmd: python scr/preprocess.py
+    deps:
+    - path: data/raw/star_classification.csv
+      hash: md5
+      md5: bce06389286124270180cc96bf116584
+      size: 16755863
+    - path: scr/preprocess.py
+      hash: md5
+      md5: 4e687e87435ad36128dead535edbe1b9
+      size: 1694
+    outs:
+    - path: data/processed/balanced_stars.csv
+      hash: md5
+      md5: 14c92cce085ed1dc642e0bfcc2ed36d9
+      size: 5634276
+  train:
+    cmd: python scr/train.py
+    deps:
+    - path: data/processed/balanced_stars.csv
+      hash: md5
+      md5: 14c92cce085ed1dc642e0bfcc2ed36d9
+      size: 5634276
+    - path: scr/train.py
+      hash: md5
+      md5: 76cb7d377d98000d125e3e55d063d101
+      size: 1808
+    outs:
+    - path: metrics.json
+      hash: md5
+      md5: fd3f32744ca4ea4c7003a6534f245525
+      size: 32
+    - path: models
+      hash: md5
+      md5: bacf7bcd840eefee980543d6d486e72a.dir
+      size: 866
+      nfiles: 1

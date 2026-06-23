@@ -1,0 +1,25 @@
+---
+stages:
+  download:
+    cmd: python scr/download_data.py
+    deps:
+      - scr/download_data.py
+    outs:
+      - data/raw/star_classification.csv
+  preprocess:
+    cmd: python scr/preprocess.py
+    deps:
+      - data/raw/star_classification.csv
+      - scr/preprocess.py
+    outs:
+      - data/processed/balanced_stars.csv
+  train:
+    cmd: python scr/train.py
+    deps:
+      - data/processed/balanced_stars.csv
+      - scr/train.py
+    metrics:
+      - metrics.json:
+          cache: false
+    outs:
+      - models
